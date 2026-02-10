@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -23,9 +24,15 @@ class User extends Authenticatable
         'lastname',
         'username',
         'email',
+        'email_verified_at',
         'password',
         'is_verified',
     ];
+
+    public function otps(): HasMany
+    {
+        return $this->hasMany(Otp::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
