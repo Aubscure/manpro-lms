@@ -3,6 +3,7 @@ import Register from "./features/auth/register/Register";
 import Login from "./features/auth/login/Login";
 import AuthLayout from "./layouts/authLayout/AuthLayout";
 
+
 function App() {
   return (
     <BrowserRouter>

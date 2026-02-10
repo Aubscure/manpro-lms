@@ -28,7 +28,7 @@ function AuthLayout() {
       <Box sx={sx.card}>
         {/* LEFT SIDE */}
         <Box sx={sx.leftPanel}>
-          <img src={manprologo} style={{ width: 180 }} />
+          <img src={manprologo} alt="ManPro logo" style={{ width: 180 }} />
           <Box sx={{ mt: 3 }}>
             {features.map((item, index) => (
               <Box key={index} sx={{ mb: 2 }}>
