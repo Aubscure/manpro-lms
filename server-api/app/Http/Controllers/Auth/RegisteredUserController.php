@@ -38,11 +38,11 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         // Auth::login($user);
-        $token = $user->createToken('lms-token')->plainTextToken;
+        // $token = $user->createToken('lms-token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
-            'token' => $token
+            'message' => "Registration successful. Please verify your email via OTP.",
+            'email' => $user->email,
         ], 201);
     }
 }
