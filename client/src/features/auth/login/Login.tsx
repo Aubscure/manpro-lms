@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { sx } from "./login.style";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../../../services/authService";
 
 interface formDataStates {
   email: string;
@@ -17,10 +18,23 @@ function Login() {
   const [password, setPassword] = useState<formDataStates["password"]>("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    if (!email || !password) return alert("Please enter email and password");
 
-    alert(`${email} and ${password}`);
+    try {
+      await authService.login({ email, password });
+      console.log("Login credentials valid");
+
+      await authService.generateOtp({ email, type: "login" });
+      console.log("Login OTP sent");
+      alert("OTP sent! Please check your email.");
+
+      navigate("/auth/otp", { state: { email, type: "login" } });
+    } catch (err: any) {
+      console.log("Login error:", err.response?.data || err)
+      alert("Failed to login");
+    }
   };
 
   return (

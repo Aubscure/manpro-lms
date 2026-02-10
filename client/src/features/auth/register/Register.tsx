@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface formDataStates {
   firstname: string;
@@ -27,6 +27,8 @@ function Register() {
   const [passwordConfirmation, setPasswordConfirmation] =
     useState<formDataStates["passwordConfirmation"]>("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
@@ -38,9 +40,17 @@ function Register() {
         password,
         password_confirmation: passwordConfirmation,
       });
+
       console.log("Registered", res.data);
+
+      await authService.generateOtp({ email, type: "registration" });
+      console.log("Registration OTP Sent");
+      alert("OTP sent! Check your email");
+
+      navigate("/auth/otp", { state: { email, type: "registration" } });
     } catch (error: any) {
       console.error("Registration error:", error.response?.data || error);
+      alert("Failed to register");
     }
   };
 
@@ -85,11 +95,13 @@ function Register() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
+                type="password"
                 value={password}
                 label="Password"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <TextField
+                type="password"
                 value={passwordConfirmation}
                 label="Password Confirmation"
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
